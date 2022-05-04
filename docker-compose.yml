@@ -1,21 +1,34 @@
 version: '3.4'
+
+networks:
+  default:
+    driver: bridge
+
 services:
-  app:
-    image: luizimcpi/aws-publisher-service
+  aws-project01:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+      network: host
+    image: aws-project01
+    depends_on:
+      - localstack
+    container_name: aws-project01-publisher
+    ports:
+      - 8080:8080
+    links:
+      - localstack
     environment:
       - SPRING_PROFILES_ACTIVE=local
       - AWS_ACCESS_KEY_ID=foo
       - AWS_SECRET_ACCESS_KEY=bar
-    container_name: aws-publisher-service-app
+  localstack:
+    image: localstack/localstack
     ports:
-      - 8080:8080
-#    networks:
-#      - my-network
-#    depends_on:
-#      - localstack
-#    links:
-#      - localstack
-
-#networks:
-#  my-network:
-#    external: true
+      - "4566-4584:4566-4584"
+    environment:
+      - SERVICES=sns,sqs,dynamodb # a list of desired services you want to use.
+      - DEFAULT_REGION=us-east-1 # This is the region where your localstack mocks to be running
+      - DATA_DIR=/tmp/localstack/data
+      - AWS_ACCESS_KEY_ID=foo
+      - AWS_SECRET_ACCESS_KEY=bar
