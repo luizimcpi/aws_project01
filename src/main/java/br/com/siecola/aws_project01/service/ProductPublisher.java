@@ -45,6 +45,8 @@ public class ProductPublisher {
                     productEventsTopic.getTopicArn(),
                     objectMapper.writeValueAsString(envelope));
 
+            LOG.info("Success to create product event message: {}", envelope);
+
         } catch (JsonProcessingException e) {
             LOG.error("Failed to create product event message");
         }

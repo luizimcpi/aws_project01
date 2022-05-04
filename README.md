@@ -1,19 +1,30 @@
 # AWS PROJECT 01
 
+## TODO
+```
+fix application docker compose
+```
+
 ## build and run docker image 
 ```
-in root folder
+in root folder execute follow commands in order:
 
-./gradlew build 
+1- docker network create -d bridge my-network
 
-docker build -t luizimcpi/aws-publisher-service .
+2- cd localstack 
 
-docker network create -d bridge my-network
+3- docker-compose up -d
 
-docker-compose up
+4- cd ..
+
+5- ./gradlew build 
+
+6- docker build -t luizimcpi/aws-publisher-service .
+
+7- docker-compose up
 ```
 
-## Create Products 
+## Create Local Product
 
 ```
 curl --location --request POST 'localhost:8080/api/products' \
@@ -27,4 +38,13 @@ curl --location --request POST 'localhost:8080/api/products' \
 }'
 ```
 
+## READ MESSAGE FROM LOCAL QUEUE
+```
+aws --endpoint-url=http://localhost:4566 sqs receive-message --queue-url http://localhost:4566/queue/product-events --max-number-of-messages 10
+```
+
+## Destroy all created containers
+```
+docker-compose down
+```
 
