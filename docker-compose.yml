@@ -9,27 +9,13 @@ services:
     container_name: aws-publisher-service-app
     ports:
       - 8080:8080
-    networks:
-      - my-network
-    depends_on:
-      - localstack
-    links:
-      - localstack
-  localstack:
-    image: localstack/localstack:0.11.5
-    container_name: localstack
-    ports:
-      - "4566:4566"
-      - "4571:4571"
-    networks:
-      - my-network
-    environment:
-      - SERVICES=sns,sqs,dynamodb
-      - DEFAULT_REGION=us-east-1
-      - DATA_DIR=/tmp/localstack/data
-      - AWS_ACCESS_KEY_ID=foo
-      - AWS_SECRET_ACCESS_KEY=bar
+#    networks:
+#      - my-network
+#    depends_on:
+#      - localstack
+#    links:
+#      - localstack
 
-networks:
-  my-network:
-    external: true
+#networks:
+#  my-network:
+#    external: true
