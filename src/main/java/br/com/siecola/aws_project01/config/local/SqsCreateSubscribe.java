@@ -20,7 +20,7 @@ public class SqsCreateSubscribe {
     public SqsCreateSubscribe(AmazonSNS snsClient, @Qualifier("productEventsTopic") Topic productEventsTopic) {
         AmazonSQS sqsClient = AmazonSQSClient.builder()
                 .withEndpointConfiguration(
-                        new AwsClientBuilder.EndpointConfiguration("http://localstack:4566",
+                        new AwsClientBuilder.EndpointConfiguration("http://localhost:4566",
                                 Regions.US_EAST_1.getName()))
                 .withCredentials(new DefaultAWSCredentialsProviderChain())
                 .build();

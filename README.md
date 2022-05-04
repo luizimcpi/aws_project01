@@ -6,7 +6,9 @@ in root folder
 
 ./gradlew build 
 
-docker build -t luizimcpi/aws-project-service01 .
+docker build -t luizimcpi/aws-publisher-service .
+
+docker network create -d bridge my-network
 
 docker-compose up
 ```

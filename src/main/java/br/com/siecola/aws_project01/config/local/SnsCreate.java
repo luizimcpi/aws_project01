@@ -30,7 +30,7 @@ public class SnsCreate {
     public SnsCreate() {
         this.snsClient = AmazonSNSClient.builder()
                 .withEndpointConfiguration(
-                        new AwsClientBuilder.EndpointConfiguration("http://localstack:4566",
+                        new AwsClientBuilder.EndpointConfiguration("http://localhost:4566",
                                 Regions.US_EAST_1.getName()))
                 .withCredentials(new DefaultAWSCredentialsProviderChain())
                 .build();

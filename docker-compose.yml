@@ -1,39 +1,35 @@
 version: '3.4'
 services:
-  localstack:
-    image: localstack/localstack
-    container_name: localstack
-    ports:
-      - "4566:4566"
-      - "4571:4571"
-    environment:
-      - SERVICES=sns,sqs,dynamodb # a list of desired services you want to use.
-      - DEFAULT_REGION=us-east-1 # This is the region where your localstack mocks to be running
-      - DATA_DIR=/tmp/localstack/data
-      - AWS_ACCESS_KEY_ID=foo
-      - AWS_SECRET_ACCESS_KEY=bar
-#    networks:
-#      testing_net:
-#        ipv4_address: 172.28.1.2
   app:
-    image: luizimcpi/aws-project-service01
+    image: luizimcpi/aws-publisher-service
     environment:
       - SPRING_PROFILES_ACTIVE=local
       - AWS_ACCESS_KEY_ID=foo
       - AWS_SECRET_ACCESS_KEY=bar
-    container_name: aws-project-service-app
+    container_name: aws-publisher-service-app
     ports:
       - 8080:8080
+    networks:
+      - my-network
     depends_on:
       - localstack
-#    restart: always
-#    networks:
-#      testing_net:
-#        ipv4_address: 172.28.1.1
+    links:
+      - localstack
+  localstack:
+    image: localstack/localstack:0.11.5
+    container_name: localstack
+    ports:
+      - "4566:4566"
+      - "4571:4571"
+    networks:
+      - my-network
+    environment:
+      - SERVICES=sns,sqs,dynamodb
+      - DEFAULT_REGION=us-east-1
+      - DATA_DIR=/tmp/localstack/data
+      - AWS_ACCESS_KEY_ID=foo
+      - AWS_SECRET_ACCESS_KEY=bar
 
-#networks:
-#  testing_net:
-#    ipam:
-#      driver: default
-#      config:
-#        - subnet: 172.28.0.0/16
+networks:
+  my-network:
+    external: true
